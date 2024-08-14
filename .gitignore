@@ -163,3 +163,4 @@ cython_debug/
 Scrapping.ipynb
 scrapping.py    
 .DS_Store
+Data/.DS_Store
