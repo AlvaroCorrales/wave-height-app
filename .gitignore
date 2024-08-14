@@ -162,3 +162,4 @@ cython_debug/
 # Custom
 Scrapping.ipynb
 scrapping.py    
+.DS_Store
