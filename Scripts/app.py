@@ -13,10 +13,10 @@ def load_predictions(prediction_file='../Data/predictions/predictions.csv'):
     return predictions
 
 # Optional: Function to trigger prediction script manually
-def run_prediction_script():
-    result = subprocess.run(['python', 'predict.py'], capture_output=True, text=True)
-    # st.text(f"Output:\n{result.stdout}")
-    # st.text(f"Errors (if any):\n{result.stderr}")
+# def run_prediction_script():
+#     result = subprocess.run(['python', 'predict.py'], capture_output=True, text=True)
+#     st.text(f"Output:\n{result.stdout}")
+#     st.text(f"Errors (if any):\n{result.stderr}")
 
 # Streamlit app layout
 st.title("Model Predictions")
@@ -34,11 +34,11 @@ else:
     st.write("No predictions available yet.")
 
 # Optional: Button to manually run the prediction script
-if st.button('Run Predictions Now'):
-    run_prediction_script()
+# if st.button('Run Predictions Now'):
+#     run_prediction_script()
 
 # Optional: Button to refresh the predictions display
-if st.button('Refresh Predictions'):
-    predictions = load_predictions()
-    st.write("Latest Predictions:")
-    st.dataframe(predictions)
+# if st.button('Refresh Predictions'):
+#     predictions = load_predictions()
+#     st.write("Latest Predictions:")
+#     st.dataframe(predictions)
