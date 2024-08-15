@@ -2,12 +2,15 @@ import streamlit as st
 import pandas as pd
 import os
 from datetime import datetime
+import plotly.graph_objects as go
 import subprocess
 
 # Function to load predictions from a CSV or another data source
 def load_predictions(prediction_file='../Data/predictions/predictions.csv'):
     if os.path.exists(prediction_file):
         predictions = pd.read_csv(prediction_file)
+        predictions['Date/Time'] = pd.to_datetime(predictions['Date/Time'])
+        predictions.set_index(keys = 'Date/Time', inplace=True)
     else:
         predictions = pd.DataFrame()  # Return an empty DataFrame if no predictions exist
     return predictions
@@ -29,7 +32,52 @@ predictions = load_predictions()
 
 if not predictions.empty:
     st.write("Latest Predictions:")
-    st.dataframe(predictions)
+
+    # Wave height
+    fig1 = go.Figure()
+    fig1.add_trace(go.Scatter(
+                    y=predictions['wave_height'], 
+                    x=predictions.index,
+                    mode='lines',
+                    name='Predicted Height',
+                    line=dict(color='royalblue'))) 
+    fig1.update_layout(
+        title='Predicted wave heights in Mooloolaba',
+        xaxis_title="Date",
+        yaxis_title="Wave height (meters)",
+    )
+    st.plotly_chart(fig1, use_container_width=True)
+
+    # Wave period
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(
+                    y=predictions['wave_period'], 
+                    x=predictions.index,
+                    mode='lines',
+                    name='Predicted period',
+                    line=dict(color = 'orange')))
+    fig2.update_layout(
+        title='Predicted wave period in Mooloolaba',
+        xaxis_title="Date",
+        yaxis_title="Wave period (seconds)",
+    )
+    st.plotly_chart(fig2, use_container_width=True)
+
+    # Wave direction
+    fig3 = go.Figure()
+    fig3.add_trace(go.Scatter(
+                    y=predictions['wave_direction'], 
+                    x=predictions.index,
+                    mode='lines',
+                    name='Predicted direction of waves',
+                    line=dict(color = 'green')))
+    fig3.update_layout(
+        title='Predicted direction of waves in Mooloolaba',
+        xaxis_title="Date",
+        yaxis_title="Direction of waves (degrees, N=0, E=90)",
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
 else:
     st.write("No predictions available yet.")
 
