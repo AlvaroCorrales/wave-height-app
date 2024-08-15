@@ -26,7 +26,7 @@ def fetch_data():
     # Define the parameters, including the resource ID and the filters
     params = {
         'resource_id': resource_id,
-        'limit': 24,  # 24 records for the last 12 hours with 30 min intervals
+        'limit': 48,  # 24 records for the last 12 hours with 30 min intervals
         'q': json.dumps(filters)  # Convert the filters dictionary to a JSON string
     }
 
@@ -85,7 +85,7 @@ def preprocess_data(result_dict):
 
 # Step 4: Make predictions using the loaded model
 def make_predictions(model, processed_data):
-    predictions = model.predict(processed_data)
+    predictions = model.predict(steps = 24, last_window=processed_data)
     return predictions
 
 # Step 5: Main function to execute the steps
@@ -95,8 +95,7 @@ def main():
     model = load_model(model_path)
 
     # Fetch the data
-    api_url = 'https://api.example.com/data'  # Replace with your data API URL
-    data = fetch_data(api_url)
+    data = fetch_data()
 
     # Preprocess the data
     processed_data = preprocess_data(data)
