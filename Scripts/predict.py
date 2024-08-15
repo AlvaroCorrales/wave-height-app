@@ -102,6 +102,7 @@ def main():
 
     # Make predictions
     predictions = make_predictions(model, processed_data)
+    predictions.to_csv('../Data/predictions/predictions.csv')
 
     # Optionally, save the predictions to a file, database, etc.
     # For now, we will just print the predictions
