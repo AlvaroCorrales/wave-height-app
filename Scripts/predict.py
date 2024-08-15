@@ -86,6 +86,7 @@ def preprocess_data(result_dict):
 # Step 4: Make predictions using the loaded model
 def make_predictions(model, processed_data):
     predictions = model.predict(steps = 24, last_window=processed_data)
+    predictions.index.name = 'Date/Time'
     return predictions
 
 # Step 5: Main function to execute the steps
