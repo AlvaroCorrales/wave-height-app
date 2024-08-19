@@ -9,8 +9,8 @@ import subprocess
 def load_predictions(prediction_file='../Data/predictions/predictions.csv'):
     if os.path.exists(prediction_file):
         predictions = pd.read_csv(prediction_file)
-        predictions['Date/Time'] = pd.to_datetime(predictions['Date/Time'])
-        predictions.set_index(keys = 'Date/Time', inplace=True)
+        predictions['datetime'] = pd.to_datetime(predictions['datetime'])
+        predictions.set_index(keys = 'datetime', inplace=True)
     else:
         predictions = pd.DataFrame()  # Return an empty DataFrame if no predictions exist
     return predictions
