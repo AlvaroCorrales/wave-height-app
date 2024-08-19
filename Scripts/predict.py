@@ -29,7 +29,8 @@ def fetch_data():
     params = {
         'resource_id': resource_id,
         'limit': 48,  # 24 records for the last 12 hours with 30 min intervals
-        'q': json.dumps(filters)  # Convert the filters dictionary to a JSON string
+        'q': json.dumps(filters),  # Convert the filters dictionary to a JSON string                
+        'sort': '_id desc'  # Sort by record ID in descending order to get the latest records  # Convert the filters dictionary to a JSON string
     }
 
     # Encode the parameters and create the full URL
@@ -143,8 +144,8 @@ def main():
     upsert_dataframe(connection_string, predictions)
 
     # Print the predictions
-    print("Predictions:")
-    print(predictions)
+    # print("Predictions:")
+    # print(predictions)
 
 if __name__ == '__main__':
     main()
