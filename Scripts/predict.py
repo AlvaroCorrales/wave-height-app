@@ -1,10 +1,12 @@
 import pickle
-import requests
+import sqlitecloud
 import numpy as np
 import pandas as pd
 import urllib.request
 import urllib.parse
 import json
+from dotenv import load_dotenv
+import os
 
 # Step 1: Load the trained model from the pickle file
 def load_model(model_path):
@@ -90,6 +92,36 @@ def make_predictions(model, processed_data):
     predictions.index = predictions.index.strftime('%Y-%m-%d %H:%M:%S')
     return predictions
 
+# Step 5: Insert predictions in database
+def upsert_dataframe(connection_string, dataframe):
+    # Connect to the SQLiteCloud database
+    conn = sqlitecloud.connect(connection_string)
+    db_name = "chinook.sqlite"
+    conn.execute(f"USE DATABASE {db_name}")
+    
+    # Define the upsert function inside the main function
+    def upsert_row(conn, datetime, wave_direction, wave_height, wave_period):
+        upsert_sql = f'''
+        INSERT INTO waves (datetime, wave_direction, wave_height, wave_period)
+        VALUES (?, ?, ?, ?)
+        ON CONFLICT(datetime) DO UPDATE SET
+            wave_direction=excluded.wave_direction,
+            wave_height=excluded.wave_height,
+            wave_period=excluded.wave_period;
+        '''
+        conn.execute(upsert_sql, (datetime, wave_direction, wave_height, wave_period))
+    
+    try:
+        # Iterate over each row in the dataframe and perform the upsert
+        for index, row in dataframe.iterrows():
+            upsert_row(conn, index, row['wave_direction'], row['wave_height'], row['wave_period'])
+        
+        print("Data appended and updated successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        conn.close()
+
 # Step 5: Main function to execute the steps
 def main():
     # Load the model
@@ -104,10 +136,13 @@ def main():
 
     # Make predictions
     predictions = make_predictions(model, processed_data)
-    predictions.to_csv('../Data/predictions/predictions.csv')
 
-    # Optionally, save the predictions to a file, database, etc.
-    # For now, we will just print the predictions
+    # Save the predictions to a file, database, etc.
+    load_dotenv()
+    connection_string = os.getenv('SQL_CONNECTION')
+    upsert_dataframe(connection_string, predictions)
+
+    # Print the predictions
     print("Predictions:")
     print(predictions)
 
