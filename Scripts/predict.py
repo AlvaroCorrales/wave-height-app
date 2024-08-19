@@ -75,7 +75,7 @@ def preprocess_data(result_dict):
     df['datetime'] = pd.to_datetime(df['datetime'])
     # df['DateTime'] = df['DateTime'].dt.strftime('%Y-%m-%d %H:%M:%S')    
     df.set_index(keys = 'datetime', inplace=True)
-    df = df.asfreq('30min')
+    df = df.asfreq('30T')
 
     # Keep only desired variables
     target_vars = ['wave_height', 'wave_period', 'wave_direction']
