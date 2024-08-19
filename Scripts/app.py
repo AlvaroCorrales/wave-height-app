@@ -4,15 +4,35 @@ import os
 from datetime import datetime
 import plotly.graph_objects as go
 import subprocess
+import sqlitecloud
+from dotenv import load_dotenv
 
-# Function to load predictions from a CSV or another data source
-def load_predictions(prediction_file='../Data/predictions/predictions.csv'):
-    if os.path.exists(prediction_file):
-        predictions = pd.read_csv(prediction_file)
+# Function to load predictions from database
+def load_predictions(connection_string, table_name='waves'):
+    # Open the connection to SQLite Cloud
+    conn = sqlitecloud.connect(connection_string)
+    
+    # Use the correct database
+    db_name = "chinook.sqlite"
+    conn.execute(f"USE DATABASE {db_name}")
+    
+    try:
+        # Load data from the specified table into a pandas DataFrame
+        query = f"SELECT * FROM {table_name}"
+        predictions = pd.read_sql_query(query, conn)
+        
+        # Convert the 'datetime' column to a datetime object and set it as the index
         predictions['datetime'] = pd.to_datetime(predictions['datetime'])
-        predictions.set_index(keys = 'datetime', inplace=True)
-    else:
-        predictions = pd.DataFrame()  # Return an empty DataFrame if no predictions exist
+        predictions.set_index(keys='datetime', inplace=True)
+    
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        predictions = pd.DataFrame()  # Return an empty DataFrame if an error occurs
+    
+    finally:
+        # Close the database connection
+        conn.close()
+    
     return predictions
 
 # Optional: Function to trigger prediction script manually
@@ -28,7 +48,9 @@ st.title("Model Predictions")
 st.write("Last updated:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # Load and display the latest predictions
-predictions = load_predictions()
+load_dotenv()
+connection_string = os.getenv('SQL_CONNECTION')
+predictions = load_predictions(connection_string = connection_string)
 
 if not predictions.empty:
     st.write("Latest Predictions:")
