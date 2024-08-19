@@ -65,7 +65,7 @@ if not predictions.empty:
                     line=dict(color='royalblue'))) 
     fig1.update_layout(
         title='Predicted wave heights in Mooloolaba',
-        xaxis_title="Date",
+        xaxis_title="Date/Time",
         yaxis_title="Wave height (meters)",
     )
     st.plotly_chart(fig1, use_container_width=True)
@@ -80,7 +80,7 @@ if not predictions.empty:
                     line=dict(color = 'orange')))
     fig2.update_layout(
         title='Predicted wave period in Mooloolaba',
-        xaxis_title="Date",
+        xaxis_title="Date/Time",
         yaxis_title="Wave period (seconds)",
     )
     st.plotly_chart(fig2, use_container_width=True)
@@ -95,7 +95,7 @@ if not predictions.empty:
                     line=dict(color = 'green')))
     fig3.update_layout(
         title='Predicted direction of waves in Mooloolaba',
-        xaxis_title="Date",
+        xaxis_title="Date/Time",
         yaxis_title="Direction of waves (degrees, N=0, E=90)",
     )
     st.plotly_chart(fig3, use_container_width=True)
