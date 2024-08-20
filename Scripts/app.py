@@ -104,6 +104,8 @@ if not predictions.empty:
 else:
     st.write("No predictions available yet.")
 
+st.print(predictions)
+
 # Optional: Button to manually run the prediction script
 # if st.button('Run Predictions Now'):
 #     run_prediction_script()
