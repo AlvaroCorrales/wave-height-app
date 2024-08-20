@@ -24,7 +24,7 @@ def load_predictions(connection_string, table_name='waves'):
         # Convert the 'datetime' column to a datetime object and set it as the index
         predictions['datetime'] = pd.to_datetime(predictions['datetime'])
         predictions.set_index(keys='datetime', inplace=True)
-        predictions.sort_index(ascending=True, inplace=True)
+        predictions.sort_index(ascending=False, inplace=True)
     
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -104,9 +104,6 @@ if not predictions.empty:
 
 else:
     st.write("No predictions available yet.")
-
-st.dataframe(last_preds)
-st.dataframe(predictions)
 
 # Optional: Button to manually run the prediction script
 # if st.button('Run Predictions Now'):
