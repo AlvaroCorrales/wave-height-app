@@ -88,7 +88,7 @@ def preprocess_data(result_dict):
 
 # Step 4: Make predictions using the loaded model
 def make_predictions(model, processed_data):
-    predictions = model.predict(steps = 24, last_window=processed_data)
+    predictions = model.predict(steps = 24, last_window=processed_data.as_freq('30T'))
     predictions.index.name = 'datetime'
     predictions.index = predictions.index.strftime('%Y-%m-%d %H:%M:%S')
     return predictions
