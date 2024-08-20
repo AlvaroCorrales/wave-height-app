@@ -3,6 +3,6 @@ pandas
 plotly
 python-dotenv
 sqlitecloud
-streamlit==0.12
-skforecast
+streamlit
+skforecast==0.12
 lightgbm
