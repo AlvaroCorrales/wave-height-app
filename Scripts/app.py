@@ -104,7 +104,7 @@ if not predictions.empty:
 else:
     st.write("No predictions available yet.")
 
-st.dataframe(predictions)
+st.dataframe(last_preds)
 
 # Optional: Button to manually run the prediction script
 # if st.button('Run Predictions Now'):
