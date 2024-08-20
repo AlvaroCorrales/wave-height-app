@@ -51,6 +51,7 @@ st.write("Last updated:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 load_dotenv()
 connection_string = os.getenv('SQL_CONNECTION')
 predictions = load_predictions(connection_string = connection_string)
+last_preds = predictions[:-24]
 
 if not predictions.empty:
     st.write("Latest Predictions:")
@@ -58,8 +59,8 @@ if not predictions.empty:
     # Wave height
     fig1 = go.Figure()
     fig1.add_trace(go.Scatter(
-                    y=predictions['wave_height'], 
-                    x=predictions.index,
+                    y=last_preds['wave_height'], 
+                    x=last_preds.index,
                     mode='lines',
                     name='Predicted Height',
                     line=dict(color='royalblue'))) 
@@ -73,8 +74,8 @@ if not predictions.empty:
     # Wave period
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(
-                    y=predictions['wave_period'], 
-                    x=predictions.index,
+                    y=last_preds['wave_period'], 
+                    x=last_preds.index,
                     mode='lines',
                     name='Predicted period',
                     line=dict(color = 'orange')))
@@ -88,8 +89,8 @@ if not predictions.empty:
     # Wave direction
     fig3 = go.Figure()
     fig3.add_trace(go.Scatter(
-                    y=predictions['wave_direction'], 
-                    x=predictions.index,
+                    y=last_preds['wave_direction'], 
+                    x=last_preds.index,
                     mode='lines',
                     name='Predicted direction of waves',
                     line=dict(color = 'green')))
