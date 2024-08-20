@@ -134,18 +134,23 @@ def main():
 
     # Preprocess the data
     processed_data = preprocess_data(data)
+    # print('Data processesed')
+    # print('Data freq:', processed_data.index)
+    # # print(processed_data)
+
 
     # Make predictions
     predictions = make_predictions(model, processed_data)
 
     # Save the predictions to a file, database, etc.
-    load_dotenv()
-    connection_string = os.getenv('SQL_CONNECTION')
-    upsert_dataframe(connection_string, predictions)
+    # load_dotenv()
+    # connection_string = os.getenv('SQL_CONNECTION')
+    # upsert_dataframe(connection_string, predictions)
 
     # Print the predictions
-    # print("Predictions:")
-    # print(predictions)
+    print("Predictions:")
+    print(predictions)
+
 
 if __name__ == '__main__':
     main()
