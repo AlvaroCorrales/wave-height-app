@@ -126,7 +126,7 @@ def upsert_dataframe(connection_string, dataframe):
 # Step 5: Main function to execute the steps
 def main():
     # Load the model
-    model_path = '../Models/mooloolaba/forecaster_mool.pkl'
+    model_path = './../Models/mooloolaba/forecaster_mool.pkl'
     model = load_model(model_path)
 
     # Fetch the data
