@@ -8,6 +8,8 @@ on:
 jobs:
   predict:
     runs-on: ubuntu-latest
+    env:
+        SQL_CONNECTION: ${{ secrets.SQL_CONNECTION }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
