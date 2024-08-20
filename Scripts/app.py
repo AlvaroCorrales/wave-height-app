@@ -7,6 +7,7 @@ import subprocess
 import sqlitecloud
 from dotenv import load_dotenv
 
+## DEFINITIONS
 # Function to load predictions from database
 def load_predictions(connection_string, table_name='waves'):
     # Open the connection to SQLite Cloud
@@ -36,17 +37,51 @@ def load_predictions(connection_string, table_name='waves'):
     
     return predictions
 
+# Map direction names
+def name_my_direction(deg:float):
+    '''
+    Maps directions in degrees to direction names (north, south, etc.)
+    '''
+    
+    if 0 <= deg < 22.5:
+        dir = 'NORTH'
+    elif 22.5 <= deg < 67.5:
+        dir = 'NORTHEAST'
+    elif 67.5 <= deg < 112.5:
+        dir = 'EAST'
+    elif 112.5 <= deg < 157.5:
+        dir = 'SOUTHEAST'
+    elif 157.5 <= deg < 202.5:
+        dir = 'SOUTH'
+    elif 202.5 <= deg < 247.5:
+        dir = 'SOUTHWEST'
+    elif 247.5 <= deg < 292.5:
+        dir = 'WEST'
+    elif 292.5 <= deg < 337.5:
+        dir = 'NORTHWEST'
+    elif 337.5 <= deg < 360:
+        dir = 'NORTH'
+    else:
+        dir = 'ERROR'
+    return dir
+
 # Optional: Function to trigger prediction script manually
 # def run_prediction_script():
 #     result = subprocess.run(['python', 'predict.py'], capture_output=True, text=True)
 #     st.text(f"Output:\n{result.stdout}")
 #     st.text(f"Errors (if any):\n{result.stderr}")
 
-# Streamlit app layout
-st.title("Model Predictions")
+## INTERFACE
+tab1, tab2, tab3 = st.tabs(['About', 'Charts', 'Data'])
+
+# TAB 1
+tab1.title('About')
+
+# TAB 2
+tab2.title("Model Predictions")
 
 # Display the last update time (if applicable)
-st.write("Last updated:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+# tab2.write("Last updated:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 
 # Load and display the latest predictions
 load_dotenv()
@@ -55,7 +90,7 @@ predictions = load_predictions(connection_string = connection_string)
 last_preds = predictions[:-24]
 
 if not predictions.empty:
-    st.write("Latest Predictions:")
+    # tab2.write("Latest Predictions:")
 
     # Wave height
     fig1 = go.Figure()
@@ -70,7 +105,7 @@ if not predictions.empty:
         xaxis_title="Date/Time",
         yaxis_title="Wave height (meters)",
     )
-    st.plotly_chart(fig1, use_container_width=True)
+    tab2.plotly_chart(fig1, use_container_width=True)
 
     # Wave period
     fig2 = go.Figure()
@@ -85,22 +120,38 @@ if not predictions.empty:
         xaxis_title="Date/Time",
         yaxis_title="Wave period (seconds)",
     )
-    st.plotly_chart(fig2, use_container_width=True)
+    tab2.plotly_chart(fig2, use_container_width=True)
 
-    # Wave direction
+    # Wave direction    
+    all_directions = ['NORTH', 'NORTHEAST', 'EAST', 'SOUTHEAST', 'SOUTH', 'SOUTHWEST', 'WEST', 'NORTHWEST']
+    direction_mapping = {direction: i for i, direction in enumerate(all_directions)}
+    last_preds['direction_string'] = last_preds['wave_direction'].apply(lambda x: name_my_direction(x))
+    last_preds['direction_code'] = last_preds['direction_string'].map(direction_mapping)
+
     fig3 = go.Figure()
+    # Add the line with markers
     fig3.add_trace(go.Scatter(
-                    y=last_preds['wave_direction'], 
-                    x=last_preds.index,
-                    mode='lines',
-                    name='Predicted direction of waves',
-                    line=dict(color = 'green')))
+        x=last_preds.index,
+        y=last_preds['direction_code'],
+        mode='lines+markers',
+        marker=dict(size=10),
+        line=dict(width=2),
+        text=last_preds['direction_string'],  # Hover text will show the direction
+        hoverinfo='text'
+    ))
     fig3.update_layout(
-        title='Predicted direction of waves in Mooloolaba',
-        xaxis_title="Date/Time",
-        yaxis_title="Direction of waves (degrees, N=0, E=90)",
+        title='Predicted direction that waves are coming from',
+        xaxis_title='Time',
+        yaxis_title='Direction',
+        yaxis=dict(
+            tickvals=[0, 1, 2, 3, 4, 5, 6, 7],  # Corresponding codes for NORTH, EAST, SOUTH, WEST
+            ticktext=all_directions,  # Explicitly set tick labels
+        ),
     )
-    st.plotly_chart(fig3, use_container_width=True)
+
+    # Show the figure
+    tab2.plotly_chart(fig3, use_container_width=True)
+ 
 
 else:
     st.write("No predictions available yet.")
@@ -114,3 +165,12 @@ else:
 #     predictions = load_predictions()
 #     st.write("Latest Predictions:")
 #     st.dataframe(predictions)
+
+# TAB 3
+tab3.title('Model Predictions')
+tab3.write(last_preds[['wave_height', 'wave_period', 'wave_direction', 'direction_string']].rename(columns = 
+    {'wave_height': 'Wave height (meters)',
+     'wave_direction': 'Wave direction (degrees)',
+     'wave_period': 'Wave period (seconds)',
+     'direction_string': 'Wave direction'}
+))
