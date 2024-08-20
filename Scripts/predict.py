@@ -141,8 +141,8 @@ def main():
     # Save the predictions to a file, database, etc.
     load_dotenv()
     connection_string = os.getenv('SQL_CONNECTION')
-    print(connection_string[0:2])
-    # upsert_dataframe(connection_string, predictions)
+    # print(connection_string[0:2])
+    upsert_dataframe(connection_string, predictions)
 
     # Print the predictions
     # print("Predictions:")
