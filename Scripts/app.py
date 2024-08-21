@@ -74,7 +74,7 @@ def name_my_direction(deg:float):
 ## INTERFACE
 st.title('Can I surf in Queensland? 🏄‍♂️')
 st.write("Check surfing conditions in Queensland's best surfing spots")
-st.selectbox('Select your beach', ['Mooloolaba', 'Brisbane'])
+st.selectbox('Select your location', ['Mooloolaba', 'Brisbane'])
 
 tab1, tab2, tab3 = st.tabs(['About', 'Charts', 'Data'])
 
