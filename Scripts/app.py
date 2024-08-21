@@ -72,7 +72,7 @@ def name_my_direction(deg:float):
 #     st.text(f"Errors (if any):\n{result.stderr}")
 
 ## INTERFACE
-st.title('Can I surf in Mooloolaba? :surf:')
+st.title('Can I surf in Mooloolaba? 🏄‍♂️')
 
 tab1, tab2, tab3 = st.tabs(['About', 'Charts', 'Data'])
 
