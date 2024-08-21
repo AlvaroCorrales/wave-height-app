@@ -78,12 +78,13 @@ st.write('Select your beach')
 tab1, tab2, tab3 = st.tabs(['About', 'Charts', 'Data'])
 
 # TAB 1
-tab1.title('About')
-tab1.write('In this website you can check the wave height, period and direction 12-hour forecasts of beaches in Queensland')
+tab1.header('About')
+tab1.write('In this website you can check the wave height, period and direction 12-hour forecasts of beaches in Queensland, Australia.')
 tab1.write('Feel like catching some waves? 🌊😎☀️')
+tab1.markdown('> This app is under construction. Stay tuned for updates and be kind with errors and lack of features.')
 
 # TAB 2
-tab2.title("Model Predictions")
+tab2.header("Model Predictions")
 
 # Display the last update time (if applicable)
 # tab2.write("Last updated:", datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -172,7 +173,7 @@ else:
 #     st.dataframe(predictions)
 
 # TAB 3
-tab3.title('Model Predictions')
+tab3.header('Model Predictions')
 tab3.write(last_preds[['wave_height', 'wave_period', 'wave_direction', 'direction_string']].rename(columns = 
     {'wave_height': 'Wave height (meters)',
      'wave_direction': 'Wave direction (degrees)',
