@@ -72,12 +72,15 @@ def name_my_direction(deg:float):
 #     st.text(f"Errors (if any):\n{result.stderr}")
 
 ## INTERFACE
-st.title('Can I surf in Mooloolaba? 🏄‍♂️')
+st.title('Can I surf in Queensland? 🏄‍♂️')
+st.write('Select your beach')
 
 tab1, tab2, tab3 = st.tabs(['About', 'Charts', 'Data'])
 
 # TAB 1
 tab1.title('About')
+tab1.write('In this website you can check the wave height, period and direction 12-hour forecasts of beaches in Queensland')
+tab1.write('Feel like catching some waves? 🌊😎☀️')
 
 # TAB 2
 tab2.title("Model Predictions")
