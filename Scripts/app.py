@@ -83,6 +83,7 @@ tab1.header('About')
 tab1.write('In this website you can check the wave height, period and direction 12-hour forecasts of beaches in Queensland, Australia.')
 tab1.write('Feel like catching some waves? 🌊😎☀️')
 tab1.markdown('> This app is a small personal project under construction. Stay tuned for updates and be kind with errors and lack of features.')
+tab1.markdown('> Forecasts displayed here do not constitute any sort of advice. Use them at your own risk')
 
 # TAB 2
 tab2.header("Model Predictions")
