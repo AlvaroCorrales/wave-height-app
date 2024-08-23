@@ -94,7 +94,7 @@ tab2.header("Model Predictions")
 load_dotenv()
 connection_string = os.getenv('SQL_CONNECTION')
 predictions = load_predictions(connection_string = connection_string)
-last_preds = predictions[:-24]
+last_preds = predictions[-24:]
 
 if not predictions.empty:
     # tab2.write("Latest Predictions:")
