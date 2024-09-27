@@ -57,7 +57,7 @@ def fetch_data():
 
     return result_dict
 
-# Step 3: Preprocess the data if necessary
+# Step 3: Preprocess the data
 def preprocess_data(result_dict):
     
     # Conversion to dataframe
@@ -123,7 +123,7 @@ def upsert_dataframe(connection_string, dataframe):
     finally:
         conn.close()
 
-# Step 5: Main function to execute the steps
+# Step 6: Main function to execute the steps
 def main():
     # Load the model
     model_path = 'Models/mooloolaba/forecaster_mool.pkl'
